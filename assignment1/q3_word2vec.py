@@ -179,6 +179,18 @@ def cbow(currentWord, C, contextWords, tokens, inputVectors, outputVectors,
     gradOut = np.zeros(outputVectors.shape)
 
     ### YOUR CODE HERE
+    cidx = tokens[currentWord]
+    vhat = np.zeros([1, inputVectors.shape[1]])
+    for cw in contextWords:
+        idx = tokens[cw]
+        vhat += inputVectors[idx]
+
+    vhatReshaped = np.reshape(vhat, vhat.shape[1])
+    cost, curGradIn, gradOut = word2vecCostAndGradient(vhatReshaped, cidx, outputVectors, dataset)
+
+    for cw in contextWords:
+        idx = tokens[cw]
+        gradIn[idx] += curGradIn
 
     ### END YOUR CODE
 
